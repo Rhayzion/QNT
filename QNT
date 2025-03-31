@@ -1,0 +1,2134 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuantumChain</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- GSAP & Lenis Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <style>
+        :root {
+            --primary: #6e45e2;
+            --secondary: #88d3ce;
+            --dark: #1a1a2e;
+            --light: #f5f5f7;
+            --accent: #ff6b6b;
+            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--dark);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+        
+        /* Layout */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 1.5rem 0;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            background: rgba(26, 26, 46, 0.8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        header.scrolled {
+            padding: 1rem 0;
+            background: rgba(26, 26, 46, 0.95);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--light);
+            text-decoration: none;
+        }
+        
+        .logo span {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: var(--secondary);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient);
+            transition: width 0.3s;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .connect-btn {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(110, 69, 226, 0.3);
+        }
+        
+        .connect-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(110, 69, 226, 0.4);
+        }
+        
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 6rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-content {
+            max-width: 600px;
+            z-index: 2;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            backdrop-filter: blur(15px);
+            background: linear-gradient(to right, var(--light), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .primary-btn {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(110, 69, 226, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .primary-btn::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                transparent,
+                transparent,
+                transparent,
+                rgba(255, 255, 255, 0.3),
+                transparent,
+                transparent,
+                transparent
+            );
+            transform: rotate(0deg);
+            transition: transform 0.7s;
+        }
+        
+        .primary-btn:hover::before {
+            transform: rotate(180deg);
+        }
+        
+        .primary-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(110, 69, 226, 0.4);
+        }
+        
+        .secondary-btn {
+            background: transparent;
+            color: var(--light);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .secondary-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(136, 211, 206, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+        }
+        
+        .secondary-btn:hover::before {
+            left: 100%;
+        }
+        
+        .secondary-btn:hover {
+            border-color: var(--secondary);
+            color: var(--secondary);
+            transform: translateY(-2px);
+        }
+         
+        .hero-image {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50%;
+            max-width: 700px;
+            z-index: 1;
+            opacity: 0.9;
+        }
+        
+        /* Floating Elements */
+        .floating-element {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.4;
+            z-index: 0;
+        }
+        
+        .floating-1 {
+            width: 300px;
+            height: 300px;
+            background: var(--primary);
+            top: 20%;
+            left: 10%;
+        }
+        
+        .floating-2 {
+            width: 400px;
+            height: 400px;
+            background: var(--secondary);
+            bottom: 10%;
+            right: 10%;
+        }
+        
+        .floating-3 {
+            width: 200px;
+            height: 200px;
+            background: var(--accent);
+            top: 60%;
+            left: 30%;
+        }
+        
+        /* Features Section */
+        .section {
+            padding: 6rem 0;
+            position: relative;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+        }
+        
+        .section-title p {
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.8;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px) perspective(1000px) rotateX(5deg) rotateY(5deg);
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(110, 69, 226, 0.5);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            background: rgba(110, 69, 226, 0.1);
+            color: var(--primary);
+            font-size: 1.8rem;
+            box-shadow: 0 0 15px rgba(110, 69, 226, 0.5);
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--light);
+        }
+        
+        .feature-card p {
+            opacity: 0.8;
+        }
+        
+        /* Stats Section */
+        .stats {
+            background: linear-gradient(135deg, rgba(110, 69, 226, 0.1), rgba(136, 211, 206, 0.1));
+            border-radius: 30px;
+            padding: 4rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: center;
+            margin-top: 4rem;
+            backdrop-filter: blur(10px);
+        }
+        
+        .stat-item h3 {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-item p {
+            opacity: 0.8;
+            font-size: 1.1rem;
+        }
+        
+/* Token Section */
+.token-section {
+            background: linear-gradient(to right, rgba(110, 69, 226, 0.1), rgba(136, 211, 206, 0.1));
+            border-radius: 30px;
+            padding: 4rem;
+            display: flex;
+            align-items: center;
+            gap: 4rem;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(15px);
+            transform-style: preserve-3d;
+        }
+        
+        .token-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            animation: rotate 15s linear infinite reverse;
+        }
+        
+        .token-info {
+            flex: 1;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .token-info h3 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .token-info p {
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .token-image {
+            flex: 1;
+            position: relative;
+            perspective: 1000px;
+        }
+        
+        .token-visual {
+            width: 100%;
+            height: 300px;
+            background: var(--gradient);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: 700;
+            box-shadow: 0 20px 40px rgba(110, 69, 226, 0.3);
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            transition: transform 0.5s;
+        }
+        
+        .token-visual::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            animation: rotate 15s linear infinite;
+        }
+        
+        .token-visual::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 20px;
+            border: 1px solid transparent;
+            background: linear-gradient(45deg, var(--primary), var(--secondary)) border-box;
+            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: destination-out;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+        
+        .token-particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: white;
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        @keyframes rotate {
+            0% {
+                transform: rotateX(0deg);
+            }
+            100% {
+                
+                transform: rotateX(360deg);
+            }
+        }
+        
+      
+        /* Roadmap */
+        .roadmap {
+            position: relative;
+            padding-top: 4rem;
+            transform-style: preserve-3d;
+        }
+        
+        .roadmap-line {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 0;
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+            z-index: -1;
+        }
+        
+        .roadmap-item {
+            position: relative;
+            max-width: 500px;
+            margin-bottom: 4rem;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.5s;
+            transform-style: preserve-3d;
+        }
+        
+        .roadmap-item::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--gradient);
+            transform: translateY(-50%);
+            box-shadow: 0 0 20px rgba(110, 69, 226, 0.5);
+        }
+        
+        .roadmap-item:nth-child(odd) {
+            margin-right: auto;
+        }
+        
+        .roadmap-item:nth-child(even) {
+            margin-left: auto;
+        }
+        
+        .roadmap-item:nth-child(odd)::before {
+            right: -52px;
+        }
+        
+        .roadmap-item:nth-child(even)::before {
+            left: -52px;
+        }
+        
+        .roadmap-item h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+        
+        .roadmap-item .date {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        /* Neural Network Connections */
+        .neural-connection {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .connection-path {
+            stroke: url(#connectionGradient);
+            stroke-width: 2;
+            fill: none;
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+        }
+          
+        /* Team */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .team-member {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            backdrop-filter: blur(10px);
+        }
+        
+        .team-member:hover {
+            transform: perspective(1000px) rotateX(5deg) rotateY(5deg) translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        
+        .member-image {
+            height: 300px;
+            background: var(--gradient);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .member-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .member-info {
+            padding: 1.5rem;
+        }
+        
+        .member-info h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .member-info p {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .social-links a {
+            color: var(--light);
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+        
+        .social-links a:hover {
+            opacity: 1;
+            color: var(--secondary);
+        }
+        
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 4rem 0 2rem;
+            margin-top: 4rem;
+            backdrop-filter: blur(10px);
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--light);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--secondary);
+        }
+        
+        .newsletter input {
+            width: 100%;
+            padding: 0.8rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            color: white;
+            margin-bottom: 1rem;
+        }
+        
+        .newsletter button {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--gradient);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .newsletter button:hover {
+            transform: translateY(-2px);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-in {
+            animation: fadeIn 1s ease forwards;
+        }
+        
+        /* Voice UI */
+        #voice-ui {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999;
+        }
+        
+        #voice-btn {
+            background: var(--gradient);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(110, 69, 226, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            transition: transform 0.3s;
+        }
+        
+        #voice-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        #voice-feedback {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            background: rgba(26, 26, 46, 0.9);
+            padding: 1rem;
+            border-radius: 12px;
+            width: 250px;
+            display: none;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Background Grid */
+        .background-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .grid-cell {
+            position: absolute;
+            box-sizing: border-box;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+        
+        /* Floating Crypto Symbols */
+        .crypto-symbols-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .crypto-symbol {
+            position: fixed;
+            opacity: 0.1;
+            z-index: 0;
+        }
+        
+        /* Mouse Follower */
+        .mouse-follower {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: rgba(110, 69, 226, 0.3);
+            z-index: 9999;
+            pointer-events: none;
+            mix-blend-mode: screen;
+            transform: translate(-50%, -50%);
+        }
+        
+        /* Click Particles */
+        .click-particle {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            z-index: 9999;
+            pointer-events: none;
+        }
+        
+        /* Token Particles */
+        .token-particle {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background-color: rgba(255,255,255,0.8);
+            pointer-events: none;
+        }
+        
+        /* Pulse Animation */
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(110, 69, 226, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(110, 69, 226, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(110, 69, 226, 0); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .hero-image {
+                opacity: 0.3;
+            }
+            
+            .token-section {
+                flex-direction: column;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-content {
+                text-align: center;
+            }
+            
+            .cta-buttons {
+                justify-content: center;
+            }
+            
+            .roadmap::before {
+                left: 30px;
+            }
+            
+            .roadmap-item {
+                max-width: 100%;
+                margin-left: 60px !important;
+            }
+            
+            .roadmap-item::before {
+                left: -52px !important;
+                right: auto;
+            }
+            
+            #voice-ui {
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+        
+        /* Web3 Connection Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            backdrop-filter: blur(10px);
+        }
+        
+        .modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .modal-content {
+            background: var(--dark);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transform: translateY(20px);
+            transition: transform 0.3s;
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+        
+        .modal.active .modal-content {
+            transform: translateY(0);
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .wallet-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .wallet-option {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 1.5rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .wallet-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--primary);
+            transform: translateY(-5px);
+        }
+        
+        .wallet-option i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .connected-wallet {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(110, 69, 226, 0.1);
+            border-radius: 10px;
+            border: 1px solid var(--primary);
+            display: none;
+        }
+        
+        .wallet-address {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            word-break: break-all;
+        }
+        
+        .copy-address {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: var(--light);
+            padding: 0.3rem 0.6rem;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 1rem;
+            transition: background 0.3s;
+        }
+        
+        .copy-address:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .wallet-balance {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header id="header">
+        <div class="container">
+            <nav>
+                <a href="#" class="logo">Quantum<span>Chain</span></a>
+                <div class="nav-links">
+                    <a href="#features">Features</a>
+                    <a href="#token">Token</a>
+                    <a href="#roadmap">Roadmap</a>
+                    <a href="#team">Team</a>
+                </div>
+                <button class="connect-btn" id="connectWallet">Connect Wallet</button>
+            </nav>
+        </div>
+    </header>
+    <!-- Hero Section -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <h1 class="fade-in">Empowering the Decentralized Future</h1>
+            <p class="fade-in">QuantumChain is pioneering the next generation of blockchain solutions with unparalleled speed, security, and scalability.</p>
+            <div class="cta-buttons fade-in">
+                <button class="primary-btn">Explore dApps</button>
+                <button class="secondary-btn">Whitepaper</button>
+            </div>
+        </div>
+    </div>
+    <div class="hero-image">
+        <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+            <path fill="url(#gradient)" d="M250,50 C350,50 450,150 450,250 C450,350 350,450 250,450 C150,450 50,350 50,250 C50,150 150,50 250,50 Z" opacity="0.8"></path>
+            <defs>
+                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#6e45e2"/>
+                    <stop offset="100%" stop-color="#88d3ce"/>
+                </linearGradient>
+            </defs>
+        </svg>
+    </div>
+    <div class="floating-element floating-1"></div>
+    <div class="floating-element floating-2"></div>
+    <div class="floating-element floating-3"></div>
+</section>
+
+<!-- Features Section -->
+<section class="section" id="features">
+    <div class="container">
+        <div class="section-title">
+            <h2>Why Choose QuantumChain?</h2>
+            <p>Discover the cutting-edge features that set us apart in the blockchain space</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card fade-in">
+                <div class="feature-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>Quantum-Safe Security</h3>
+                <p>Advanced cryptographic techniques and decentralized protocols safeguard your assets against future threats.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h3>Blazing Speed</h3>
+                <p>Our optimized consensus mechanism achieves over 50,000 transactions per second.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon">
+                    <i class="fas fa-link"></i>
+                </div>
+                <h3>Cross-Chain Compatible</h3>
+                <p>Seamlessly interact with multiple blockchains through our universal bridge technology.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon">
+                    <i class="fas fa-leaf"></i>
+                </div>
+                <h3>Eco-Friendly</h3>
+                <p>Our proof-of-stake network consumes 99.9% less energy than traditional proof-of-work systems.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon">
+                    <i class="fas fa-cubes"></i>
+                </div>
+                <h3>Highly Customizable</h3>
+                <p>Tailor your blockchain experience with modular smart contracts and plug-and-play components.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3>Decentralized Governance</h3>
+                <p>Community-driven decision making through our transparent voting system.</p>
+            </div>
+        </div>
+        <div class="stats fade-in">
+            <div class="stat-item">
+                <h3>50K+</h3>
+                <p>Transactions per second</p>
+            </div>
+            <div class="stat-item">
+                <h3>0.1s</h3>
+                <p>Block finality</p>
+            </div>
+            <div class="stat-item">
+                <h3>$0.5</h3>
+                <p>Average fee</p>
+            </div>
+            <div class="stat-item">
+                <h3>100+</h3>
+                <p>dApps deployed</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Token Section -->
+<section class="section" id="token">
+    <div class="container">
+        <div class="section-title">
+            <h2>QNT Token</h2>
+            <p>The utility token at the heart of the QuantumChain ecosystem</p>
+        </div>
+        <div class="token-section fade-in">
+            <div class="token-info">
+                <h3>Powering the Quantum Ecosystem</h3>
+                <p>The QNT token fuels the QuantumChain network, enabling transactions, staking, and governance participation.</p>
+                <p>With a total supply of 500 million tokens and deflationary mechanisms, QNT is designed for long-term value appreciation.</p>
+                <div class="cta-buttons">
+                    <button class="primary-btn">Buy QNT</button>
+                    <button class="secondary-btn">Tokenomics</button>
+                </div>
+            </div>
+            <div class="token-image">
+                <div class="token-visual">
+                    QNT
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Roadmap -->
+<section class="section" id="roadmap">
+    <div class="container">
+        <div class="section-title">
+            <h2>Roadmap</h2>
+            <p>Our path to blockchain innovation</p>
+        </div>
+        <div class="roadmap">
+            <div class="roadmap-line"></div>
+            <div class="roadmap-item fade-in">
+                <span class="date">Q1 2024</span>
+                <h3>Mainnet Launch</h3>
+                <p>Deployment of QuantumChain mainnet with core functionalities.</p>
+            </div>
+            <div class="roadmap-item fade-in">
+                <span class="date">Q2 2024</span>
+                <h3>Cross-Chain Bridge</h3>
+                <p>Implementation of bridges to major blockchains for asset transfers.</p>
+            </div>
+            <div class="roadmap-item fade-in">
+                <span class="date">Q3 2024</span>
+                <h3>Developer Tools</h3>
+                <p>Release of SDKs and APIs for easier dApp development.</p>
+            </div>
+            <div class="roadmap-item fade-in">
+                <span class="date">Q4 2025</span>
+                <h3>Mobile Wallet</h3>
+                <p>Launch of a user-friendly mobile wallet for QuantumChain.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Team -->
+<section class="section" id="team">
+    <div class="container">
+        <div class="section-title">
+            <h2>Our Team</h2>
+            <p>Meet the minds behind QuantumChain</p>
+        </div>
+        <div class="team-grid">
+            <div class="team-member fade-in">
+                <div class="member-image">
+                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Team Member">
+                </div>
+                <div class="member-info">
+                    <h3>Dr. Emily Watson</h3>
+                    <p>Founder & CEO</p>
+                    <p>Blockchain visionary with a PhD in Quantum Computing.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="team-member fade-in">
+                <div class="member-image">
+                    <img src="https://randomuser.me/api/portraits/men/33.jpg" alt="Team Member">
+                </div>
+                <div class="member-info">
+                    <h3>Mark Thompson</h3>
+                    <p>CTO</p>
+                    <p>Expert in distributed systems and smart contract development.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="team-member fade-in">
+                <div class="member-image">
+                    <img src="https://randomuser.me/api/portraits/women/66.jpg" alt="Team Member">
+                </div>
+                <div class="member-info">
+                    <h3>Lisa Chen</h3>
+                    <p>Head of Marketing</p>
+                    <p>Digital marketing specialist with a passion for blockchain technology.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="team-member fade-in">
+                <div class="member-image">
+                    <img src="https://randomuser.me/api/portraits/men/76.jpg" alt="Team Member">
+                </div>
+                <div class="member-info">
+                    <h3>David Lee</h3>
+                    <p>Lead Developer</p>
+                    <p>Full-stack developer with extensive experience in blockchain applications.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>QuantumChain</h3>
+                <p>Leading the way in quantum-resistant blockchain technology.</p>
+                <div class="social-links" style="margin-top: 1rem;">
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-discord"></i></a>
+                    <a href="#"><i class="fab fa-telegram"></i></a>
+                    <a href="#"><i class="fab fa-github"></i></a>
+                    <a href="#"><i class="fab fa-medium"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Technology</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Documentation</a></li>
+                    <li><a href="#">GitHub</a></li>
+                    <li><a href="#">Whitepaper</a></li>
+                    <li><a href="#">Network Status</a></li>
+                    <li><a href="#">Bug Bounty</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Community</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Governance</a></li>
+                    <li><a href="#">Forum</a></li>
+                    <li><a href="#">Ambassadors</a></li>
+                    <li><a href="#">Grants Program</a></li>
+                    <li><a href="#">Events</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Resources</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Press Kit</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Brand Guidelines</a></li>
+                </ul>
+            </div>
+            <div class="footer-column newsletter">
+                <h3>Stay Updated</h3>
+                <p>Subscribe to our newsletter for the latest updates and news.</p>
+                <input type="email" placeholder="Your email address">
+                <button>Subscribe</button>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 QuantumChain. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<!-- Web3 Connection Modal -->
+<div class="modal" id="walletModal">
+    <div class="modal-content">
+        <button class="close-modal" id="closeModal">×</button>
+        <h2>Connect Your Wallet</h2>
+        <p>Choose your preferred wallet provider to connect to QuantumChain</p>
+        <div class="wallet-options">
+            <div class="wallet-option" data-wallet="metamask">
+                <i class="fab fa-ethereum"></i>
+                <span>MetaMask</span>
+            </div>
+            <div class="wallet-option" data-wallet="walletconnect">
+                <i class="fas fa-wallet"></i>
+                <span>WalletConnect</span>
+            </div>
+            <div class="wallet-option" data-wallet="coinbase">
+                <i class="fab fa-bitcoin"></i>
+                <span>Coinbase</span>
+            </div>
+            <div class="wallet-option" data-wallet="phantom">
+                <i class="fas fa-ghost"></i>
+                <span>Phantom</span>
+            </div>
+        </div>
+        <div class="connected-wallet" id="connectedWallet">
+            <div class="wallet-address">
+                <span id="walletAddress">0x742d35Cc6634C0532925a3b844Bc454e4438f44e</span>
+                <button class="copy-address">Copy</button>
+            </div>
+            <div class="wallet-balance">
+                Balance: <span id="walletBalance">45.7 QNT</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Voice Control UI -->
+    <div id="voice-ui">
+        <button id="voice-btn"><i class="fas fa-microphone"></i></button>
+        <div id="voice-feedback">
+            <p style="margin-bottom: 0.5rem;">Say commands like:</p>
+            <ul style="list-style: none; padding-left: 0; font-size: 0.9rem; opacity: 0.8;">
+                <li>"Go to Features"</li>
+                <li>"Connect wallet"</li>
+                <li>"Show team"</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize GSAP plugins
+            gsap.registerPlugin(ScrollTrigger);
+            
+            // =============================================
+            // 1. LENIS SMOOTH SCROLL WITH HAPTIC FEEDBACK
+            // =============================================
+            const lenis = new Lenis({
+                lerp: 0.1,
+                smoothWheel: true,
+                syncTouch: true
+            });
+
+            // RAF loop for smooth scrolling
+            function raf(time) {
+                lenis.raf(time);
+                requestAnimationFrame(raf);
+            }
+            requestAnimationFrame(raf);
+
+            // Haptic feedback on section enter
+            const sections = document.querySelectorAll('section');
+            let lastActiveIndex = -1;
+
+            lenis.on('scroll', ({ scroll }) => {
+                const viewportMiddle = scroll + window.innerHeight / 2;
+                
+                sections.forEach((section, index) => {
+                    const rect = section.getBoundingClientRect();
+                    const sectionTop = scroll + rect.top;
+                    const sectionBottom = scroll + rect.bottom;
+                    
+                    if (viewportMiddle > sectionTop && viewportMiddle < sectionBottom) {
+                        if (index !== lastActiveIndex) {
+                            // Trigger haptic on mobile
+                            if ('vibrate' in navigator && window.innerWidth < 768) {
+                                navigator.vibrate(30);
+                            }
+                            lastActiveIndex = index;
+                        }
+                    }
+                });
+                
+                // Header scroll effect
+                const header = document.getElementById('header');
+                if (scroll > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+
+            // =============================================
+            // 2. VOICE NAVIGATION SYSTEM
+            // =============================================
+            const voiceBtn = document.getElementById('voice-btn');
+            const voiceFeedback = document.getElementById('voice-feedback');
+            let recognition;
+
+            if ('webkitSpeechRecognition' in window) {
+                recognition = new webkitSpeechRecognition();
+                recognition.continuous = false;
+                recognition.interimResults = false;
+                recognition.maxAlternatives = 1;
+
+                recognition.onstart = () => {
+                    voiceBtn.innerHTML = '<i class="fas fa-circle" style="color: #ff6b6b;"></i>';
+                    voiceFeedback.style.display = 'block';
+                    gsap.to(voiceBtn, {
+                        scale: 1.2,
+                        duration: 0.3
+                    });
+                };
+
+                recognition.onend = () => {
+                    voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+                    gsap.to(voiceBtn, {
+                        scale: 1,
+                        duration: 0.3
+                    });
+                    setTimeout(() => voiceFeedback.style.display = 'none', 2000);
+                };
+
+                recognition.onresult = (event) => {
+                    const command = event.results[0][0].transcript.toLowerCase();
+                    
+                    // Visual feedback
+                    const feedback = document.createElement('div');
+                    feedback.textContent = `Heard: "${command}"`;
+                    feedback.style.position = 'absolute';
+                    feedback.style.bottom = '70px';
+                    feedback.style.right = '0';
+                    feedback.style.background = 'rgba(255,255,255,0.1)';
+                    feedback.style.padding = '0.5rem 1rem';
+                    feedback.style.borderRadius = '20px';
+                    voiceFeedback.appendChild(feedback);
+                    
+                    gsap.from(feedback, { y: 20, opacity: 0, duration: 0.3 });
+                    gsap.to(feedback, {
+                        y: -10,
+                        opacity: 0,
+                        delay: 2,
+                        duration: 0.5,
+                        onComplete: () => feedback.remove()
+                    });
+
+                    // Process voice commands
+                    if (command.includes('feature')) {
+                        lenis.scrollTo('#features', { duration: 1.5 });
+                    } 
+                    else if (command.includes('token')) {
+                        lenis.scrollTo('#token', { duration: 1.5 });
+                    }
+                    else if (command.includes('roadmap') || command.includes('plan')) {
+                        lenis.scrollTo('#roadmap', { duration: 1.5 });
+                    }
+                    else if (command.includes('team')) {
+                        lenis.scrollTo('#team', { duration: 1.5 });
+                    }
+                    else if (command.includes('connect') || command.includes('wallet')) {
+                        document.getElementById('connectWallet').click();
+                    }
+                    else if (command.includes('home') || command.includes('top')) {
+                        lenis.scrollTo(0, { duration: 1.5 });
+                    }
+                };
+
+                voiceBtn.addEventListener('click', () => {
+                    recognition.start();
+                });
+            } else {
+                voiceBtn.style.display = 'none';
+            }
+
+            // =============================================
+            // 3. BACKGROUND GRID CREATION
+            // =============================================
+            const createGrid = () => {
+                const grid = document.createElement('div');
+                grid.className = 'background-grid';
+                document.body.appendChild(grid);
+                
+                const size = 50;
+                const cols = Math.ceil(window.innerWidth / size);
+                const rows = Math.ceil(window.innerHeight / size);
+                
+                for (let i = 0; i < cols * rows; i++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'grid-cell';
+                    grid.appendChild(cell);
+                    
+                    gsap.set(cell, {
+                        width: size,
+                        height: size,
+                        border: '1px solid rgba(255,255,255,0.03)',
+                        position: 'absolute',
+                        x: (i % cols) * size,
+                        y: Math.floor(i / cols) * size
+                    });
+                    
+                    // Animate cells on scroll
+                    ScrollTrigger.create({
+                        trigger: cell,
+                        start: 'top bottom',
+                        end: 'bottom top',
+                        onEnter: () => animateCell(cell),
+                        onEnterBack: () => animateCell(cell)
+                    });
+                }
+                
+                function animateCell(cell) {
+                    gsap.to(cell, {
+                        backgroundColor: 'rgba(110, 69, 226, 0.1)',
+                        duration: 0.3,
+                        yoyo: true,
+                        repeat: 1,
+                        ease: 'power1.out'
+                    });
+                }
+            };
+            
+            createGrid();
+
+            // =============================================
+            // 4. FLOATING CRYPTO SYMBOLS
+            // =============================================
+            const cryptoContainer = document.createElement('div');
+            cryptoContainer.className = 'crypto-symbols-container';
+            document.body.appendChild(cryptoContainer);
+            
+            const symbols = ['₿', 'Ξ', '◆', '◊', '⧫', '◎', '◈', 'Ⓢ'];
+            for (let i = 0; i < 30; i++) {
+                const symbol = document.createElement('div');
+                symbol.className = 'crypto-symbol';
+                symbol.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                cryptoContainer.appendChild(symbol);
+                
+                const size = gsap.utils.random(20, 50);
+                const x = gsap.utils.random(0, window.innerWidth);
+                const y = gsap.utils.random(0, window.innerHeight);
+                const duration = gsap.utils.random(10, 20);
+                const delay = gsap.utils.random(0, 5);
+                
+                gsap.set(symbol, {
+                    position: 'fixed',
+                    fontSize: size + 'px',
+                    opacity: 0.1,
+                    color: i % 2 === 0 ? '#6e45e2' : '#88d3ce',
+                    zIndex: 0,
+                    x,
+                    y
+                });
+                
+                gsap.to(symbol, {
+                    y: '+=100',
+                    rotation: '+=360',
+                    duration,
+                    delay,
+                    repeat: -1,
+                    yoyo: true,
+                    ease: 'sine.inOut'
+                });
+            }
+
+            // =============================================
+            // 5. HERO SECTION ANIMATIONS
+            // =============================================
+            const heroTimeline = gsap.timeline();
+            
+            heroTimeline.from('.hero h1', {
+                y: 50,
+                opacity: 0,
+                duration: 1,
+                ease: 'power3.out'
+            })
+            .from('.hero p', {
+                y: 30,
+                opacity: 0,
+                duration: 0.8,
+                ease: 'power2.out'
+            }, '-=0.5')
+            .from('.cta-buttons', {
+                y: 30,
+                opacity: 0,
+                duration: 0.8,
+                ease: 'back.out(1.7)'
+            }, '-=0.4')
+            .from('.hero-image', {
+                scale: 0.8,
+                opacity: 0,
+                duration: 1.5,
+                ease: 'elastic.out(1, 0.5)'
+            }, '-=0.8')
+            .from('.floating-element', {
+                scale: 0,
+                opacity: 0,
+                duration: 1.5,
+                stagger: 0.2,
+                ease: 'back.out(1.7)'
+            }, '-=1');
+
+            // Floating elements continuous animation
+            gsap.to('.floating-1', {
+                y: '+=20',
+                x: '+=10',
+                rotation: '+=5',
+                duration: 8,
+                repeat: -1,
+                yoyo: true,
+                ease: 'sine.inOut'
+            });
+            
+            gsap.to('.floating-2', {
+                y: '+=30',
+                x: '-=15',
+                rotation: '-=3',
+                duration: 10,
+                repeat: -1,
+                yoyo: true,
+                ease: 'sine.inOut'
+            });
+            
+            gsap.to('.floating-3', {
+                y: '-=25',
+                x: '+=20',
+                rotation: '+=7',
+                duration: 7,
+                repeat: -1,
+                yoyo: true,
+                ease: 'sine.inOut'
+            });
+
+            // =============================================
+            // 6. TOKEN VISUAL ANIMATION
+            // =============================================
+           // Token particle emission
+        const tokenVisual = document.querySelector('.token-visual');
+        
+        tokenVisual.addEventListener('mouseenter', () => {
+            // Create particles when hovering token visual
+            const particleInterval = setInterval(() => {
+                const particle = document.createElement('div');
+                particle.className = 'token-particle';
+                tokenVisual.appendChild(particle);
+                
+                const size = Math.random() * 8 + 2;
+                const startX = Math.random() * tokenVisual.offsetWidth;
+                const startY = Math.random() * tokenVisual.offsetHeight;
+                const endX = startX + (Math.random() * 100 - 50);
+                const endY = startY + (Math.random() * 100 - 50);
+                const duration = Math.random() * 2 + 1;
+                
+                gsap.set(particle, {
+                    width: size,
+                    height: size,
+                    x: startX,
+                    y: startY,
+                    background: `radial-gradient(circle, white, transparent)`
+                });
+                
+                gsap.to(particle, {
+                    x: endX,
+                    y: endY,
+                    opacity: 0,
+                    duration: duration,
+                    onComplete: () => particle.remove()
+                });
+            }, 100);
+            
+            tokenVisual.dataset.particleInterval = particleInterval;
+        });
+        
+        tokenVisual.addEventListener('mouseleave', () => {
+            clearInterval(tokenVisual.dataset.particleInterval);
+        });
+        
+        // Rotate token visual on hover
+        tokenVisual.addEventListener('mousemove', (e) => {
+            const rect = tokenVisual.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const rotateY = (x - centerX) / 20;
+            const rotateX = (centerY - y) / 20;
+            
+            gsap.to(tokenVisual, {
+                rotateY: rotateY,
+                rotateX: rotateX,
+                duration: 0.5
+            });
+        });
+        
+        tokenVisual.addEventListener('mouseleave', () => {
+            gsap.to(tokenVisual, {
+                rotateY: 0,
+                rotateX: 0,
+                duration: 0.5
+            });
+        });
+        
+        // Continuous rotation when not hovering
+        const tokenRotation = gsap.to(tokenVisual, {
+            rotationY: 360,
+            duration: 20,
+            repeat: -1,
+            ease: 'none',
+            paused: true
+        });
+        
+        tokenVisual.addEventListener('mouseenter', () => tokenRotation.pause());
+        tokenVisual.addEventListener('mouseleave', () => tokenRotation.play());
+        
+            
+            // Create particles for token visual
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'token-particle';
+                tokenVisual.appendChild(particle);
+                
+                gsap.set(particle, {
+                    position: 'absolute',
+                    width: '5px',
+                    height: '5px',
+                    backgroundColor: 'rgba(255,255,255,0.8)',
+                    borderRadius: '50%',
+                    x: gsap.utils.random(0, 300),
+                    y: gsap.utils.random(0, 300)
+                });
+                
+                gsap.to(particle, {
+                    x: 'random(0, 300)',
+                    y: 'random(0, 300)',
+                    duration: 'random(3, 6)',
+                    repeat: -1,
+                    yoyo: true,
+                    ease: 'sine.inOut'
+                });
+            }
+
+            // =============================================
+            // 7. FEATURE CARDS ANIMATIONS
+            // =============================================
+            gsap.utils.toArray('.feature-card').forEach((card, i) => {
+                gsap.from(card, {
+                    scrollTrigger: {
+                        trigger: card,
+                        start: 'top top%',
+                        toggleActions: 'play none none reverse'
+                    },
+                    y: 100,
+                    opacity: 0,
+                    duration: 0.8,
+                    delay: i * 0.1,
+                    ease: 'back.out(1.7)'
+                });
+            });
+
+            // =============================================
+            // 8. ROADMAP ITEMS ANIMATION
+            // Roadmap line animation
+        gsap.to('.roadmap-line', {
+            height: '100%',
+            scrollTrigger: {
+                trigger: '.roadmap',
+                start: 'top 80%',
+                end: 'bottom 20%',
+                scrub: true,
+            }
+        });
+
+        // Roadmap items animation
+        gsap.utils.toArray('.roadmap-item').forEach((item, index) => {
+            const direction = index % 2 === 0 ? -100 : 100;
+            gsap.from(item, {
+                scrollTrigger: {
+                    trigger: item,
+                    start: 'top 80%',
+                },
+                x: direction,
+                opacity: 0,
+                duration: 0.8,
+                ease: 'power3.out',
+            });
+        });
+
+
+            // =============================================
+            // 9. TEAM MEMBER ANIMATIONS
+            // =============================================
+            gsap.utils.toArray('.team-member').forEach((member, i) => {
+                gsap.from(member, {
+                    scrollTrigger: {
+                        trigger: member,
+                        start: 'top 100%',
+                        toggleActions: 'play none none reverse'
+                    },
+                    y: 100,
+                    opacity: 0,
+                    duration: 0.6,
+                    delay: i * 0.15,
+                    ease: 'back.out(1.7)'
+                });
+                
+                // Hover effect
+                member.addEventListener('mouseenter', () => {
+                    gsap.to(member, {
+                        y: -10,
+                        duration: 0.3,
+                        ease: 'power2.out'
+                    });
+                });
+                
+                member.addEventListener('mouseleave', () => {
+                    gsap.to(member, {
+                        y: 0,
+                        duration: 0.3,
+                        ease: 'power2.out'
+                    });
+                });
+            });
+
+            // =============================================
+            // 10. STATS COUNTER ANIMATION
+            // =============================================
+            const statsSection = document.querySelector('.stats');
+            ScrollTrigger.create({
+                trigger: statsSection,
+                start: 'top 80%',
+                onEnter: () => {
+                    gsap.utils.toArray('.stat-item h3').forEach(stat => {
+                        const target = parseFloat(stat.textContent.replace(/[^0-9.]/g, ''));
+                        const suffix = stat.textContent.match(/[^0-9.]/g)?.join('') || '';
+                        
+                        gsap.fromTo(stat, 
+                            { textContent: 0 },
+                            { 
+                                textContent: target,
+                                duration: 2,
+                                ease: 'power1.out',
+                                snap: { textContent: 1 },
+                                onUpdate: function() {
+                                    stat.textContent = Math.floor(this.targets()[0].textContent) + suffix;
+                                }
+                            }
+                        );
+                    });
+                }
+            });
+
+            // =============================================
+            // 11. WALLET MODAL INTERACTIONS
+            // =============================================
+            const connectBtn = document.getElementById('connectWallet');
+            const closeModal = document.getElementById('closeModal');
+            const modal = document.getElementById('walletModal');
+
+            connectBtn.addEventListener('click', function() {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                
+                // Animate modal entrance with GSAP
+                gsap.fromTo(modal, 
+                    { opacity: 0, backdropFilter: 'blur(0px)' },
+                    { opacity: 1, backdropFilter: 'blur(10px)', duration: 0.5, ease: 'power2.out' }
+                );
+                gsap.fromTo('.modal-content', 
+                    { y: 50, opacity: 0 },
+                    { y: 0, opacity: 1, duration: 0.5, ease: 'back.out(1.7)', delay: 0.1 }
+                );
+                
+                // Stagger wallet options animation
+                gsap.fromTo('.wallet-option', {
+                    y: 50,
+                    opacity: 0,
+                    duration: 0.5,
+                    stagger: 0.1,
+                    delay: 0.3,
+                    ease: 'back.out(1.7)'
+                },{
+                    y:0,
+                    opacity: 1
+
+                });
+            });
+
+            closeModal.addEventListener('click', function() {
+                gsap.to(modal, {
+                    opacity: 0,
+                    backdropFilter: 'blur(0px)',
+                    duration: 0.3,
+                    onComplete: () => {
+                        modal.classList.remove('active');
+                        document.body.style.overflow = 'auto';
+                    }
+                });
+            });
+
+            // Mock wallet connection
+            document.querySelectorAll('.wallet-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.getElementById('connectedWallet').style.display = 'block';
+                    
+                    // Animate wallet connection
+                    gsap.from('#connectedWallet', {
+                        height: 0,
+                        opacity: 0,
+                        padding: 0,
+                        duration: 0.5,
+                        ease: 'power2.out'
+                    });
+                    
+                    // Animate balance counter
+                    gsap.from('#walletBalance', {
+                        textContent: 0,
+                        duration: 2,
+                        ease: 'power1.out',
+                        snap: { textContent: 0.1 },
+                        onUpdate: function() {
+                            document.getElementById('walletBalance').textContent = 
+                                Math.floor(this.targets()[0].textContent * 100) / 100 + ' QNT';
+                        }
+                    });
+                });
+            });
+
+            // =============================================
+            // 12. CONNECT BUTTON PULSE EFFECT
+            // =============================================
+            gsap.to(connectBtn, {
+                boxShadow: '0 0 20px 5px rgba(110, 69, 226, 0.6)',
+                duration: 2,
+                repeat: -1,
+                yoyo: true,
+                ease: 'sine.inOut'
+            });
+
+            // =============================================
+            // 13. MOUSE FOLLOWER EFFECT
+            // =============================================
+            const follower = document.createElement('div');
+            follower.className = 'mouse-follower';
+            document.body.appendChild(follower);
+            
+            window.addEventListener('mousemove', (e) => {
+                gsap.to(follower, {
+                    x: e.clientX,
+                    y: e.clientY,
+                    duration: 0.3,
+                    ease: 'power2.out'
+                });
+            });
+            
+            // =============================================
+            // 14. CLICK EXPLOSION EFFECT
+            // =============================================
+            document.addEventListener('click', (e) => {
+                const particles = [];
+                const colors = ['#6e45e2', '#88d3ce', '#ff6b6b', '#ffffff'];
+                
+                for (let i = 0; i < 10; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'click-particle';
+                    document.body.appendChild(particle);
+                    particles.push(particle);
+                    
+                    gsap.set(particle, {
+                        position: 'fixed',
+                        width: '10px',
+                        height: '10px',
+                        borderRadius: '50%',
+                        backgroundColor: colors[Math.floor(Math.random() * colors.length)],
+                        x: e.clientX,
+                        y: e.clientY,
+                        zIndex: 9999,
+                        pointerEvents: 'none'
+                    });
+                    
+                    gsap.to(particle, {
+                        x: e.clientX + gsap.utils.random(-100, 100),
+                        y: e.clientY + gsap.utils.random(-100, 100),
+                        opacity: 0,
+                        scale: 0,
+                        duration: 1,
+                        onComplete: () => particle.remove()
+                    });
+                }
+            });
+
+            // =============================================
+            // 15. TEXT SCRAMBLE EFFECT FOR HERO SUBTITLE
+            // =============================================
+            const heroSubtitle = document.querySelector('.hero p');
+            const originalText = heroSubtitle.textContent;
+            const chars = "!<>-_\\/[]{}—=+*^?#________";
+            
+            function scrambleText(element, newText) {
+                let queue = [];
+                
+                for (let i = 0; i < Math.max(originalText.length, newText.length); i++) {
+                    const from = originalText[i] || '';
+                    const to = newText[i] || '';
+                    const start = Math.floor(Math.random() * 40);
+                    const end = start + Math.floor(Math.random() * 40);
+                    queue.push({ from, to, start, end });
+                }
+                
+                let frame = 0;
+                const update = () => {
+                    let output = '';
+                    let complete = 0;
+                    
+                    for (let i = 0; i < queue.length; i++) {
+                        let { from, to, start, end, char } = queue[i];
+                        
+                        if (frame >= end) {
+                            complete++;
+                            output += to;
+                        } else if (frame >= start) {
+                            if (!char || Math.random() < 0.28) {
+                                char = chars[Math.floor(Math.random() * chars.length)];
+                                queue[i].char = char;
+                            }
+                            output += `<span class="scramble-char">${char}</span>`;
+                        } else {
+                            output += from;
+                        }
+                    }
+                    
+                    element.innerHTML = output;
+                    
+                    if (complete < queue.length) {
+                        requestAnimationFrame(update);
+                        frame++;
+                    }
+                };
+                
+                update();
+            }
+            
+            // Randomly change the subtitle text periodically
+            const subtitles = [
+                "Nexus is revolutionizing decentralized applications with cutting-edge blockchain technology.",
+                "Experience seamless interoperability and user-friendly Web3 experiences.",
+                "Join the future of decentralized finance and applications today.",
+                "Built for speed, security, and scalability. The blockchain evolved."
+            ];
+            
+            let currentSubtitle = 0;
+            setInterval(() => {
+                currentSubtitle = (currentSubtitle + 1) % subtitles.length;
+                scrambleText(heroSubtitle, subtitles[currentSubtitle]);
+            }, 5000);
+        });
+    </script>
+</body>
+</html>
