@@ -1,0 +1,374 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuantumChain</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="qnt.css">
+    <script src="qnt.js"></script>
+    <!-- GSAP & Lenis Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    
+</head>
+<body>
+    <!-- Header -->
+    <header id="header">
+        <div class="container">
+            <nav>
+                <a href="#" class="logo">Quantum<span>Chain</span></a>
+                <div class="nav-links">
+                    <a href="#features">Features</a>
+                    <a href="#token">Token</a>
+                    <a href="#roadmap">Roadmap</a>
+                    <a href="#team">Team</a>
+                </div>
+                <button class="connect-btn" id="connectWallet">Connect Wallet</button>
+            </nav>
+        </div>
+    </header>
+    <!-- Hero Section -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <h1 class="fade-in">Empowering the Decentralized Future</h1>
+            <p class="fade-in">QuantumChain is pioneering the next generation of blockchain solutions with unparalleled speed, security, and scalability.</p>
+            <div class="cta-buttons fade-in">
+                <button class="primary-btn">Explore dApps</button>
+                <button class="secondary-btn">Whitepaper</button>
+            </div>
+        </div>
+    </div>
+    <div class="hero-image">
+        <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+            <path fill="url(#gradient)" d="M250,50 C350,50 450,150 450,250 C450,350 350,450 250,450 C150,450 50,350 50,250 C50,150 150,50 250,50 Z" opacity="0.8"></path>
+            <defs>
+                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#6e45e2"/>
+                    <stop offset="100%" stop-color="#88d3ce"/>
+                </linearGradient>
+            </defs>
+        </svg>
+    </div>
+    <div class="floating-element floating-1"></div>
+    <div class="floating-element floating-2"></div>
+    <div class="floating-element floating-3"></div>
+</section>
+
+<!-- Features Section -->
+<section class="section" id="features">
+    <div class="container">
+        <div class="section-title">
+            <h2>Why Choose QuantumChain?</h2>
+            <p>Discover the cutting-edge features that set us apart in the blockchain space</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card fade-in">
+                <div class="feature-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>Quantum-Safe Security</h3>
+                <p>Advanced cryptographic techniques and decentralized protocols safeguard your assets against future threats.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h3>Blazing Speed</h3>
+                <p>Our optimized consensus mechanism achieves over 50,000 transactions per second.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon">
+                    <i class="fas fa-link"></i>
+                </div>
+                <h3>Cross-Chain Compatible</h3>
+                <p>Seamlessly interact with multiple blockchains through our universal bridge technology.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon">
+                    <i class="fas fa-leaf"></i>
+                </div>
+                <h3>Eco-Friendly</h3>
+                <p>Our proof-of-stake network consumes 99.9% less energy than traditional proof-of-work systems.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon">
+                    <i class="fas fa-cubes"></i>
+                </div>
+                <h3>Highly Customizable</h3>
+                <p>Tailor your blockchain experience with modular smart contracts and plug-and-play components.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3>Decentralized Governance</h3>
+                <p>Community-driven decision making through our transparent voting system.</p>
+            </div>
+        </div>
+        <div class="stats fade-in">
+            <div class="stat-item">
+                <h3>50K+</h3>
+                <p>Transactions per second</p>
+            </div>
+            <div class="stat-item">
+                <h3>0.1s</h3>
+                <p>Block finality</p>
+            </div>
+            <div class="stat-item">
+                <h3>$0.5</h3>
+                <p>Average fee</p>
+            </div>
+            <div class="stat-item">
+                <h3>100+</h3>
+                <p>dApps deployed</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Token Section -->
+<section class="section" id="token">
+    <div class="container">
+        <div class="section-title">
+            <h2>QNT Token</h2>
+            <p>The utility token at the heart of the QuantumChain ecosystem</p>
+        </div>
+        <div class="token-section fade-in">
+            <div class="token-info">
+                <h3>Powering the Quantum Ecosystem</h3>
+                <p>The QNT token fuels the QuantumChain network, enabling transactions, staking, and governance participation.</p>
+                <p>With a total supply of 500 million tokens and deflationary mechanisms, QNT is designed for long-term value appreciation.</p>
+                <div class="cta-buttons">
+                    <button class="primary-btn">Buy QNT</button>
+                    <button class="secondary-btn">Tokenomics</button>
+                </div>
+            </div>
+            <div class="token-image">
+                <div class="token-visual">
+                    QNT
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Roadmap -->
+<section class="section" id="roadmap">
+    <div class="container">
+        <div class="section-title">
+            <h2>Roadmap</h2>
+            <p>Our path to blockchain innovation</p>
+        </div>
+        <div class="roadmap">
+            <div class="roadmap-line"></div>
+            <div class="roadmap-item fade-in">
+                <span class="date">Q1 2024</span>
+                <h3>Mainnet Launch</h3>
+                <p>Deployment of QuantumChain mainnet with core functionalities.</p>
+            </div>
+            <div class="roadmap-item fade-in">
+                <span class="date">Q2 2024</span>
+                <h3>Cross-Chain Bridge</h3>
+                <p>Implementation of bridges to major blockchains for asset transfers.</p>
+            </div>
+            <div class="roadmap-item fade-in">
+                <span class="date">Q3 2024</span>
+                <h3>Developer Tools</h3>
+                <p>Release of SDKs and APIs for easier dApp development.</p>
+            </div>
+            <div class="roadmap-item fade-in">
+                <span class="date">Q4 2025</span>
+                <h3>Mobile Wallet</h3>
+                <p>Launch of a user-friendly mobile wallet for QuantumChain.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Team -->
+<section class="section" id="team">
+    <div class="container">
+        <div class="section-title">
+            <h2>Our Team</h2>
+            <p>Meet the minds behind QuantumChain</p>
+        </div>
+        <div class="team-grid">
+            <div class="team-member fade-in">
+                <div class="member-image">
+                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Team Member">
+                </div>
+                <div class="member-info">
+                    <h3>Dr. Emily Watson</h3>
+                    <p>Founder & CEO</p>
+                    <p>Blockchain visionary with a PhD in Quantum Computing.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="team-member fade-in">
+                <div class="member-image">
+                    <img src="https://randomuser.me/api/portraits/men/33.jpg" alt="Team Member">
+                </div>
+                <div class="member-info">
+                    <h3>Mark Thompson</h3>
+                    <p>CTO</p>
+                    <p>Expert in distributed systems and smart contract development.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="team-member fade-in">
+                <div class="member-image">
+                    <img src="https://randomuser.me/api/portraits/women/66.jpg" alt="Team Member">
+                </div>
+                <div class="member-info">
+                    <h3>Lisa Chen</h3>
+                    <p>Head of Marketing</p>
+                    <p>Digital marketing specialist with a passion for blockchain technology.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="team-member fade-in">
+                <div class="member-image">
+                    <img src="https://randomuser.me/api/portraits/men/76.jpg" alt="Team Member">
+                </div>
+                <div class="member-info">
+                    <h3>David Lee</h3>
+                    <p>Lead Developer</p>
+                    <p>Full-stack developer with extensive experience in blockchain applications.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>QuantumChain</h3>
+                <p>Leading the way in quantum-resistant blockchain technology.</p>
+                <div class="social-links" style="margin-top: 1rem;">
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-discord"></i></a>
+                    <a href="#"><i class="fab fa-telegram"></i></a>
+                    <a href="#"><i class="fab fa-github"></i></a>
+                    <a href="#"><i class="fab fa-medium"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Technology</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Documentation</a></li>
+                    <li><a href="#">GitHub</a></li>
+                    <li><a href="#">Whitepaper</a></li>
+                    <li><a href="#">Network Status</a></li>
+                    <li><a href="#">Bug Bounty</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Community</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Governance</a></li>
+                    <li><a href="#">Forum</a></li>
+                    <li><a href="#">Ambassadors</a></li>
+                    <li><a href="#">Grants Program</a></li>
+                    <li><a href="#">Events</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Resources</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Press Kit</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Brand Guidelines</a></li>
+                </ul>
+            </div>
+            <div class="footer-column newsletter">
+                <h3>Stay Updated</h3>
+                <p>Subscribe to our newsletter for the latest updates and news.</p>
+                <input type="email" placeholder="Your email address">
+                <button>Subscribe</button>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 QuantumChain. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<!-- Web3 Connection Modal -->
+<div class="modal" id="walletModal">
+    <div class="modal-content">
+        <button class="close-modal" id="closeModal">×</button>
+        <h2>Connect Your Wallet</h2>
+        <p>Choose your preferred wallet provider to connect to QuantumChain</p>
+        <div class="wallet-options">
+            <div class="wallet-option" data-wallet="metamask">
+                <i class="fab fa-ethereum"></i>
+                <span>MetaMask</span>
+            </div>
+            <div class="wallet-option" data-wallet="walletconnect">
+                <i class="fas fa-wallet"></i>
+                <span>WalletConnect</span>
+            </div>
+            <div class="wallet-option" data-wallet="coinbase">
+                <i class="fab fa-bitcoin"></i>
+                <span>Coinbase</span>
+            </div>
+            <div class="wallet-option" data-wallet="phantom">
+                <i class="fas fa-ghost"></i>
+                <span>Phantom</span>
+            </div>
+        </div>
+        <div class="connected-wallet" id="connectedWallet">
+            <div class="wallet-address">
+                <span id="walletAddress">0x742d35Cc6634C0532925a3b844Bc454e4438f44e</span>
+                <button class="copy-address">Copy</button>
+            </div>
+            <div class="wallet-balance">
+                Balance: <span id="walletBalance">45.7 QNT</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Voice Control UI -->
+    <div id="voice-ui">
+        <button id="voice-btn"><i class="fas fa-microphone"></i></button>
+        <div id="voice-feedback">
+            <p style="margin-bottom: 0.5rem;">Say commands like:</p>
+            <ul style="list-style: none; padding-left: 0; font-size: 0.9rem; opacity: 0.8;">
+                <li>"Go to Features"</li>
+                <li>"Connect wallet"</li>
+                <li>"Show team"</li>
+            </ul>
+        </div>
+    </div>
+
+   
+</body>
+</html>
